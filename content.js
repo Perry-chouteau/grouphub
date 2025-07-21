@@ -34,51 +34,6 @@ async function fetchGroupHubConfig() {
         return;
     }
 }
-/**
- * @brief GetRepoLanguage
- * @param {*} owner 
- * @param {*} repo 
- * @returns 
- */
-async function getRepoLanguage(owner, repo) {
-    const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data.language; // e.g. "JavaScript"
-}
-
-// Define GitHub language colors (partial list for example)
-const languageColors = {
-  JavaScript: "#f1e05a",
-  Python: "#3572A5",
-  HTML: "#e34c26",
-  CSS: "#563d7c",
-  TypeScript: "#2b7489",
-  Java: "#b07219",
-  Ruby: "#701516",
-  PHP: "#4F5D95",
-  C: "#555555",
-  "C++": "#f34b7d",
-  "C#": "#178600",
-  Go: "#00ADD8",
-  Shell: "#89e051",
-  Swift: "#ffac45",
-  Kotlin: "#F18E33",
-  Rust: "#dea584",
-  Scala: "#c22d40",
-  Dart: "#00B4AB",
-  Lua: "#000080",
-  "Objective-C": "#438eff",
-  Perl: "#0298c3",
-  Haskell: "#5e5086",
-  Groovy: "#e69f56",
-  CoffeeScript: "#244776",
-  Vue: "#2c3e50",
-  Elm: "#60b5cc",
-  R: "#198ce7",
-  PowerShell: "#012456",
-  // add more if you want...
-};
 
 window.addEventListener("load", () => {
     const path = location.pathname;
@@ -118,7 +73,7 @@ window.addEventListener("load", () => {
         const config = await fetchGroupHubConfig(userOrOrg);
 
         if (!config) {
-            box.textContent = `📦 ${label} — '${userOrOrg}/grouphub.public/config.json' missing`;
+            box.textContent = `📦 ${label} — 'github.com/${userOrOrg}/grouphub.public/config.json' missing`;
         } else {
             const header = document.createElement("div");
             header.style.cssText = `
@@ -161,7 +116,9 @@ window.addEventListener("load", () => {
                 repoContainer.style.cssText = `
                     display: flex;
                     flex-wrap: wrap;
-                    gap: 12px;
+                    gap: 6px;
+                    margin: 0px;
+
                 `;
                 repoContainer.style.display = "none"; // Start hidden
 
@@ -178,41 +135,35 @@ window.addEventListener("load", () => {
                 for (const repoFullName of group.repos) {
                     const repoUrl = `https://github.com/${userOrOrg}/${repoFullName}`;
 
-                    const nameLang = await getRepoLanguage(userOrOrg, repoFullName);
-                    const colorLang = languageColors[nameLang];
-
-
+                    // Exemple d'utilisation
                     const repoItem = document.createElement("div");
                     repoItem.style.cssText = `
                         display: flex;
                         align-items: center;
                         gap: 6px;
+                        margin: 6px;
                         padding: 6px 6px;
-                        margin: 8px;
-                        border: 1px solid #e1e4e8;
+                        border: 1px solid #3E444C;
                         border-radius: 6px;
-                        background-color: #fff;
-                        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+                        background-color: #22282F;
                     `;
 
                     repoItem.innerHTML = `
-                        <svg viewBox="0 0 16 16" width="16" height="16" fill="#000000">
-                            <path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Z"></path>
-                        </svg>
                         <a href="${repoUrl}" target="_blank" style="font-weight: 500; color: #0969da; text-decoration: none;">
                             ${repoFullName}
                         </a>
-                        <span style="display: flex; align-items: center; gap: 6px; margin-left: 8px; font-size: 12px; color: #57606a;">
-                            <span style="
-                                display: inline-block;
-                                width: 12px;
-                                height: 12px;
-                                border-radius: 50%;
-                                background-color: ${colorLang};
-                            "></span>
-                            ${nameLang || "?" }
-                        </span>
                     `;
+//                        <span style="display: flex; align-items: center; gap: 6px; margin-left: 8px; font-size: 12px; color: #57606a;">
+//                            <span style="
+//                                display: inline-block;
+//                                width: 12px;
+//                                height: 12px;
+//                                border-radius: 50%;
+//                                background-color: ${langs?.[0]?.color};
+//                            "></span>
+//                            ${langs?.[0]?.name || "?"}
+//                        </span>
+//                    `;
 
                     repoContainer.appendChild(repoItem);
                 };
