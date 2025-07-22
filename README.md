@@ -20,3 +20,7 @@ chromium: (brave):
 - clone repo
 - `load unpacked`
 - select this git repo
+
+## improve:
+- window.load -> find a better way to load groups faster.
+- make it work in private mode with credential.
