@@ -25,3 +25,7 @@ chromium: (brave):
 
 - update in *grouphub.public* can take up to 5minutes to update extension value due to caching.
 - the best way of providing faster & smarter usage is by the usage of api key. (which is not user friendy)
+
+## improve:
+- window.load -> find a better way to load groups faster.
+- make it work in private mode with credential.
