@@ -20,3 +20,8 @@ chromium: (brave):
 - clone repo
 - `load unpacked`
 - select this git repo
+
+## notices
+
+- update in *grouphub.public* can take up to 5minutes to update extension value due to caching.
+- the best way of providing faster & smarter usage is by the usage of api key. (which is not user friendy)

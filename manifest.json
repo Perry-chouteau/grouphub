@@ -11,8 +11,12 @@
         "https://github.com/*",
         "https://github.com/orgs/*/repositories*"
       ],
-      "js": ["content.js"],
-      "css": ["styles.css"]
+      "js": [
+        "services/grouphub.js",
+        "utils/path.js",
+        "ui/box.js",
+        "content.js"
+      ]
     }
   ]
 }
