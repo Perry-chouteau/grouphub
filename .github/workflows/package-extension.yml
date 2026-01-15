@@ -1,0 +1,32 @@
+name: Build & Package Chrome Extension
+
+# Trigger on push to main or when a release is created
+on:
+  push:
+    branches:
+      - main
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repo
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Zip the extension
+      - name: Package Chrome Extension
+        run: |
+          mkdir -p dist
+          zip -r dist/grouphub.zip . -x '*.git*' -x '*.github*'
+
+      # Step 3: Upload ZIP to GitHub Release
+      - name: Upload ZIP to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/grouphub.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
