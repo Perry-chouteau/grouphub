@@ -5,6 +5,8 @@ on:
   push:
     tags:
       - 'v*'
+    branches:
+      - main        # Trigger on push to main
 
 jobs:
   build:
@@ -19,12 +21,12 @@ jobs:
       - name: Package Chrome Extension
         run: |
           mkdir -p dist
-          zip -r dist/grouphub-${GITHUB_SHA}.zip . -x '*.git*' -x '*.github*'
+          zip -r dist/grouphub-${{ github.sha }}.zip . -x '*.git*' -x '*.github*'
 
       # Step 3: Upload ZIP to GitHub Release
       - name: Upload ZIP to Release
         uses: softprops/action-gh-release@v1
         with:
-          files: dist/grouphub-${GITHUB_SHA}.zip
+          files: dist/grouphub-${{ github.sha }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
