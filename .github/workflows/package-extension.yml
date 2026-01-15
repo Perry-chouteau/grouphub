@@ -1,32 +1,33 @@
 name: Build & Package Chrome Extension
 
-# Trigger on push to main or when a release is created
 on:
   push:
-    tags:
-      - 'v*'
     branches:
-      - main        # Trigger on push to main
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repo
+      # 1. Checkout code
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Zip the extension
+      # 2. Package ZIP
       - name: Package Chrome Extension
         run: |
           mkdir -p dist
-          zip -r dist/grouphub-${{ github.sha }}.zip . -x '*.git*' -x '*.github*'
+          # Always create a versioned ZIP for tags or a latest ZIP for main
+          if [[ "${GITHUB_REF}" == refs/heads/main ]]; then
+            zip -r dist/grouphub-latest.zip . -x '*.git*' -x '*.github*'
+          else
+            zip -r dist/grouphub-${GITHUB_REF_NAME}.zip . -x '*.git*' -x '*.github*'
+          fi
 
-      # Step 3: Upload ZIP to GitHub Release
-      - name: Upload ZIP to Release
-        uses: softprops/action-gh-release@v1
+      # 3. Upload as artifact
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
         with:
-          files: dist/grouphub-${{ github.sha }}.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: grouphub-extension
+          path: dist/*
