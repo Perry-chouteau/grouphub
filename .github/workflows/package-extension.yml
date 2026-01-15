@@ -18,16 +18,11 @@ jobs:
       - name: Package Chrome Extension
         run: |
           mkdir -p dist
-          # Always create a versioned ZIP for tags or a latest ZIP for main
-          if [[ "${GITHUB_REF}" == refs/heads/main ]]; then
-            zip -r dist/grouphub-latest.zip . -x '*.git*' -x '*.github*'
-          else
-            zip -r dist/grouphub-${GITHUB_REF_NAME}.zip . -x '*.git*' -x '*.github*'
-          fi
+          zip -r dist/grouphub-latest.zip . -x '*.git*' -x '*.github*'
 
       # 3. Upload as artifact
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: grouphub-extension
           path: dist/*
